@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0"
+             xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+
+    <persistence-unit name="NBDUnit" transaction-type="RESOURCE_LOCAL">
+        <class>com.rental.model.Client</class>
+        <class>com.rental.model.Rent</class>
+        <class>com.rental.model.Vehicle</class>
+
+        <properties>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/your_db_name"/>
+            <property name="jakarta.persistence.jdbc.user" value="your_db_user"/>
+            <property name="jakarta.persistence.jdbc.password" value="your_db_password"/>
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+
+            <!-- Opcje tworzenia schematu bazy danych -->
+            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+
+            <!-- Konfiguracja logowania Hibernate -->
+            <property name="eclipselink.logging.level" value="FINE"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+        </properties>
+    </persistence-unit>
+</persistence>
