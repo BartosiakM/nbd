@@ -2,7 +2,7 @@ package com.rental.model;
 import com.sun.istack.NotNull;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import lombok.NoArgsConstructor;
+
 
 import java.util.UUID;
 
@@ -10,8 +10,7 @@ import java.util.UUID;
 @Valid
 @Table(name = "Client")
 @Access(AccessType.FIELD)
-@NoArgsConstructor
-public class Client {
+public class Client extends AbstractEntity {
     @Id
     @GeneratedValue
     @Column(name = "Client_ID")
@@ -39,24 +38,8 @@ public class Client {
         this.activeRents = 0;
     }
 
-    public String getUsername() {
-        return username;
-    }
+    public Client() {
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public UUID getID() {
-        return this.ID;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
     }
 
     public int getMaxVehicles() {
@@ -65,14 +48,6 @@ public class Client {
 
     public double applyDiscount(double price) {
         return clientType.applyDiscount(price);
-    }
-
-    public void setClientType(ClientType clientType) {
-        this.clientType = clientType;
-    }
-
-    public void setActiveRents(int activeRents) {
-        this.activeRents = activeRents;
     }
 
 }

@@ -1,8 +1,35 @@
 package com.rental.model;
 
-public class Address {
+
+import com.sun.istack.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.Valid;
+
+
+import java.util.UUID;
+
+@Entity
+@Valid
+@Table(name = "Addres")
+@Access(AccessType.FIELD)
+
+public class Address extends AbstractEntity {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "Client_ID")
+    private UUID ID;
+
+    @Column(nullable = false)
+    @NotNull
     private String city;
+
+    @Column(nullable = false)
+    @NotNull
     private String street;
+
+    @Column(nullable = false)
+    @NotNull
     private String number;
 
     public Address(String city, String street, String number) {
@@ -11,19 +38,7 @@ public class Address {
         this.number = number;
     }
 
-    public String getCity() {
-        return city;
-    }
+    public Address() {
 
-    public String getStreet() {
-        return street;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public String getAddressInfo() {
-        return city + " " + street + " " + number;
     }
 }

@@ -1,65 +1,37 @@
 package com.rental.manager;
 
-import com.rental.model.Address;
-import com.rental.model.Client;
-import com.rental.repository.ClientRepository;
-
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.criteria.CriteriaQuery;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.function.Predicate;
+import java.util.UUID;
+import com.rental.model.Client;
+import com.rental.model.ClientType;
+import com.rental.model.Address;
+import com.rental.repository.ClientRepository;
 
 public class ClientManager {
     private ClientRepository clientRepository;
+    private final EntityManager em;
+    private EntityTransaction et;
 
-    public ClientManager() {
-        this.clientRepository = new ClientRepository();  // zakładam domyślny konstruktor repozytorium
+    public ClientManager(EntityManager entityManager) {
+        this.em = entityManager;
+        this.clientRepository = new ClientRepository(entityManager);  // zakładam domyślny konstruktor repozytorium
     }
 
-    public Client getClient(String id) {
-        return clientRepository.findByPersonalId(id);
+    public void removeClient(UUID ID) {
+        clientRepository.remove(clientRepository.getByID(ID));
     }
 
-    public Client registerClient(String firstName, String lastName, String id, Address address) {
-        Client temp = getClient(id);
-        if (temp != null) {
-            return temp;
-        }
-        Client newClient = new Client(firstName, lastName, id, address);
-        clientRepository.addClient(newClient);
-        return newClient;
+    public List<Client> findAll() {
+        List<Client> list = clientRepository.findAll();
+        return list;
     }
 
-    public void unregisterClient(String id) {
-        Client client = getClient(id);
-        if (client != null) {
-            client.setArchive(true);
-        }
-    }
-
-    // Prosta metoda zamiast lambdy
-    public List<Client> findAllClients() {
-        return findClients(new AllClientsPredicate());
-    }
-
-    // Inna prosta metoda zamiast lambdy do filtrowania
-    public List<Client> findClients(Predicate<Client> predicate) {
-        List<Client> temp = clientRepository.findBy(predicate);
-        List<Client> result = new ArrayList<>();
-
-        for (Client client : temp) {
-            if (!client.isArchived()) {
-                result.add(client);
-            }
-        }
-
-        return result;
-    }
-
-    // Klasa, która zastępuje lambdę w findAllClients
-    static class AllClientsPredicate implements Predicate<Client> {
-        @Override
-        public boolean test(Client client) {
-            return true; // Zwraca wszystkich klientów
-        }
+    public Client addClient(String Username, ClientType Type, Address Address) {
+        Client client = new Client(Username, Type, Address);
+        clientRepository.add(client);
+        return client;
     }
 }

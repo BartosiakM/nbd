@@ -1,11 +1,25 @@
 package com.rental.model;
 
-public abstract class ClientType {
+import jakarta.persistence.*;
+
+
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "client_type", discriminatorType = DiscriminatorType.STRING)
+public abstract class ClientType extends AbstractEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     public abstract int getMaxVehicles();
     public abstract double applyDiscount(double price);
     public abstract String getTypeInfo();
 }
 
+@Entity
+@DiscriminatorValue("DEFAULT")
 class DefaultClientType extends ClientType {
     @Override
     public int getMaxVehicles() {
@@ -23,24 +37,9 @@ class DefaultClientType extends ClientType {
     }
 }
 
-class BronzeClientType extends ClientType {
-    @Override
-    public int getMaxVehicles() {
-        return 2;
-    }
 
-    @Override
-    public double applyDiscount(double price) {
-        double discount = 3.0;
-        return (price > discount) ? price - discount : price;
-    }
-
-    @Override
-    public String getTypeInfo() {
-        return "Bronze 2 $3.00";
-    }
-}
-
+@Entity
+@DiscriminatorValue("SILVER")
 class SilverClientType extends ClientType {
     @Override
     public int getMaxVehicles() {
@@ -59,6 +58,8 @@ class SilverClientType extends ClientType {
     }
 }
 
+@Entity
+@DiscriminatorValue("GOLD")
 class GoldClientType extends ClientType {
     @Override
     public int getMaxVehicles() {
@@ -76,6 +77,8 @@ class GoldClientType extends ClientType {
     }
 }
 
+@Entity
+@DiscriminatorValue("PLATINUM")
 class PlatinumClientType extends ClientType {
     @Override
     public int getMaxVehicles() {
@@ -93,6 +96,8 @@ class PlatinumClientType extends ClientType {
     }
 }
 
+@Entity
+@DiscriminatorValue("DIAMOND")
 class DiamondClientType extends ClientType {
     @Override
     public int getMaxVehicles() {
