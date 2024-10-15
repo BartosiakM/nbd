@@ -1,5 +1,5 @@
 package com.rental.model;
-import com.sun.istack.NotNull;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 
@@ -11,21 +11,17 @@ import java.util.UUID;
 @Table(name = "Client")
 @Access(AccessType.FIELD)
 public class Client extends AbstractEntity {
-    @Id
-    @GeneratedValue
-    @Column(name = "Client_ID")
-    private UUID ID;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "username")
     @NotNull
     private String username;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "Address_ID")
+    @JoinColumn(name = "Address_ID", referencedColumnName = "id")
     private Address address;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "ClientType_ID")
+    @JoinColumn(name = "ClientType_ID", referencedColumnName = "id")
     private ClientType clientType;
 
     @Column

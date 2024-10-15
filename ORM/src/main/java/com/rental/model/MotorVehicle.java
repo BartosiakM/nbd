@@ -1,6 +1,6 @@
 package com.rental.model;
 
-public abstract class MotorVehicle extends Vehicle {
+public class MotorVehicle extends Vehicle {
     private int engineDisplacement;
 
     public MotorVehicle(String plateNumber, int basePrice, int engineDisplacement) {
