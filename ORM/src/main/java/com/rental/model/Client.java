@@ -4,24 +4,24 @@ import jakarta.persistence.*;
 import jakarta.validation.Valid;
 
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Valid
 @Table(name = "Client")
 @Access(AccessType.FIELD)
-public class Client extends AbstractEntity {
+public class  Client extends AbstractEntity implements Serializable {
 
     @Column(name = "username")
     @NotNull
     private String username;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "Address_ID", referencedColumnName = "id")
+    @JoinColumn
     private Address address;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "ClientType_ID", referencedColumnName = "id")
+    @JoinColumn
     private ClientType clientType;
 
     @Column
@@ -36,6 +36,15 @@ public class Client extends AbstractEntity {
 
     public Client() {
 
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+
+    public UUID getClientId() {
+        return this.id;
     }
 
     public int getMaxVehicles() {

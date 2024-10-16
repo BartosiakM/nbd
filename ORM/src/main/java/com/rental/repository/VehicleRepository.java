@@ -1,44 +1,43 @@
 package com.rental.repository;
 
-import jakarta.persistence.*;
+import com.rental.model.Vehicle;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
+
 import java.util.List;
 import java.util.UUID;
-import com.rental.model.Client;
 
-public class ClientRepository implements Repository<Client> {
+public class VehicleRepository implements Repository<Vehicle> {
 
-    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("vehicle");
 
     @Override
-    public Client getByID(UUID ID) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            return em.find(Client.class, ID);
-        } finally {
-            em.close();
+    public Vehicle getByID(UUID ID) {
+        try (EntityManager em = emf.createEntityManager()) {
+            return em.find(Vehicle.class, ID);
         }
     }
 
     @Override
-    public List<Client> findAll() {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Client> query = em.createQuery("SELECT c FROM Client c", Client.class);
+    public List<Vehicle> findAll() {
+        try (EntityManager em = emf.createEntityManager()) {
+            TypedQuery<Vehicle> query = em.createQuery("SELECT v FROM Vehicle v", Vehicle.class);
             return query.getResultList();
-        } finally {
-            em.close();
         }
     }
 
     @Override
-    public Client add(Client client) {
+    public Vehicle add(Vehicle vehicle) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            em.persist(client);
+            em.persist(vehicle);
             transaction.commit();
-            return client;
+            return vehicle;
         } catch (Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -50,14 +49,14 @@ public class ClientRepository implements Repository<Client> {
     }
 
     @Override
-    public void remove(Client client) {
+    public void remove(Vehicle vehicle) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            Client attachedClient = em.find(Client.class, client.getClientId());
-            if (attachedClient != null) {
-                em.remove(attachedClient);
+            Vehicle attachedVehicle = em.find(Vehicle.class, vehicle.getVehicleId());
+            if (attachedVehicle != null) {
+                em.remove(attachedVehicle);
             }
             transaction.commit();
         } catch (Exception e) {
@@ -71,12 +70,12 @@ public class ClientRepository implements Repository<Client> {
     }
 
     @Override
-    public void update(Client client) {
+    public void update(Vehicle vehicle) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            em.merge(client);
+            em.merge(vehicle);
             transaction.commit();
         } catch (Exception e) {
             if (transaction.isActive()) {

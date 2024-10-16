@@ -1,31 +1,53 @@
 package com.rental.model;
 
-// Car.java
+import jakarta.persistence.*;
+
+@Entity
+@Access(AccessType.FIELD)
+@DiscriminatorValue("Car")
 public class Car extends MotorVehicle {
-    public enum SegmentType { A, B, C, D, E }
 
-    private SegmentType segment;
 
-    public Car(String plateNumber, int basePrice, int engineDisplacement, SegmentType segment) {
+    private String segment;
+
+    public Car(String plateNumber, int basePrice, int engineDisplacement, String segment) {
         super(plateNumber, basePrice, engineDisplacement);
         this.segment = segment;
     }
 
-    public SegmentType getSegment() {
+
+
+    public String getSegment() {
         return segment;
     }
 
-    public void setSegment(SegmentType segment) {
+    public void setSegment(String segment) {
         this.segment = segment;
     }
 
     @Override
     public double getActualRentalPrice() {
-        return getBasePrice() * (segment.ordinal() + 1) / 10.0;
+        // Zmienna dla współczynnika mnożnika ceny
+        double multiplier;
+
+        // Warunki na podstawie wartości stringa segmentu
+        if (segment.equalsIgnoreCase("A")) {
+            multiplier = 1.0;
+        } else if (segment.equalsIgnoreCase("B")) {
+            multiplier = 1.1;
+        } else if (segment.equalsIgnoreCase("C")) {
+            multiplier = 1.2;
+        } else if (segment.equalsIgnoreCase("D")) {
+            multiplier = 1.3;
+        } else if (segment.equalsIgnoreCase("E")) {
+            multiplier = 1.4;
+        } else {
+            multiplier = 1.0;  // Domyślny współczynnik, jeśli segment nie pasuje do żadnego z powyższych
+        }
+
+        // Obliczenie ceny na podstawie współczynnika
+        return getBasePrice() * multiplier;
     }
 
-    @Override
-    public String getVehicleInfo() {
-        return super.getVehicleInfo() + " " + segment;
-    }
+
 }

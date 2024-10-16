@@ -1,28 +1,34 @@
 package com.rental.model;
 
-public abstract class Vehicle {
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
+import java.io.Serializable;
+import java.util.UUID;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Access(AccessType.FIELD)
+public abstract class Vehicle extends AbstractEntity implements Serializable {
+
+    @Column(name = "plateNumber")
+    @NotNull
     private String plateNumber;
+
+    @Column(name = "basePrice")
     private int basePrice;
+
+    @Column(name = "archived")
     private boolean archive;
 
     public Vehicle(String plateNumber, int basePrice) {
-        if (plateNumber == null || plateNumber.isEmpty()) {
-            throw new IllegalArgumentException("Plate number must be provided");
-        }
         this.plateNumber = plateNumber;
         this.basePrice = basePrice;
         this.archive = false;
     }
 
-    public String getPlateNumber() {
-        return plateNumber;
-    }
-
-    public void setPlateNumber(String plateNumber) {
-        if (plateNumber == null || plateNumber.isEmpty()) {
-            throw new IllegalArgumentException("Plate number must be provided");
-        }
-        this.plateNumber = plateNumber;
+    public UUID getVehicleId() {
+        return this.id;
     }
 
     public int getBasePrice() {
@@ -34,10 +40,6 @@ public abstract class Vehicle {
     }
 
     public abstract double getActualRentalPrice();
-
-    public String getVehicleInfo() {
-        return plateNumber + " " + basePrice;
-    }
 
     public boolean isArchived() {
         return archive;
