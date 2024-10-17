@@ -16,7 +16,7 @@ public class VehicleManager {
         this.vehicleRepository = vehicleRepository;
     }
 
-    public void removeVehicle(UUID ID) {
+    public void removeVehicle(Long ID) {
         vehicleRepository.remove( vehicleRepository.getByID(ID));
     }
 

@@ -2,8 +2,9 @@ package com.rental.model;
 
 import jakarta.persistence.*;
 
-@MappedSuperclass
+@Entity
 @Access(AccessType.FIELD)
+@DiscriminatorValue("MotorVehicle")
 public class MotorVehicle extends Vehicle {
 
     @Column(name="engine_displacement")
@@ -13,6 +14,11 @@ public class MotorVehicle extends Vehicle {
         super(plateNumber, basePrice);
         this.engineDisplacement = engineDisplacement;
     }
+
+    public MotorVehicle() {
+        super("", 0);
+    }
+
 
     public int getEngineDisplacement() {
         return engineDisplacement;

@@ -16,21 +16,16 @@ public class  Client extends AbstractEntity implements Serializable {
     @NotNull
     private String username;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
-    private Address address;
-
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn
+    @JoinColumn(name = "client_type_id", referencedColumnName = "id")
     private ClientType clientType;
 
     @Column
     private int activeRents;
 
-    public Client(String username, ClientType clientType, Address address) {
+    public Client(String username, ClientType clientType) {
         this.username = username;
         this.clientType = clientType;
-        this.address = address;
         this.activeRents = 0;
     }
 
@@ -38,12 +33,14 @@ public class  Client extends AbstractEntity implements Serializable {
 
     }
 
+
     public String getUsername() {
         return username;
     }
 
+    public void setUsername(String username) { this.username = username; }
 
-    public UUID getClientId() {
+    public Long getClientId() {
         return this.id;
     }
 

@@ -27,9 +27,11 @@ public abstract class Vehicle extends AbstractEntity implements Serializable {
         this.archive = false;
     }
 
-    public UUID getVehicleId() {
+    public Long getVehicleId() {
         return this.id;
     }
+
+    public String getPlateNumber() { return this.plateNumber; }
 
     public int getBasePrice() {
         return basePrice;

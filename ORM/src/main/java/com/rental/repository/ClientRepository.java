@@ -7,10 +7,10 @@ import com.rental.model.Client;
 
 public class ClientRepository implements Repository<Client> {
 
-    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("NBDUnit");
 
     @Override
-    public Client getByID(UUID ID) {
+    public Client getByID(Long ID) {
         EntityManager em = emf.createEntityManager();
         try {
             return em.find(Client.class, ID);

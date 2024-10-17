@@ -16,15 +16,15 @@ public class Rent extends AbstractEntity implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn
     @NotNull
-    private final Client client;
+    private Client client;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn
     @NotNull
-    private final Vehicle vehicle;
+    private Vehicle vehicle;
 
     @Column(name = "begine_time")
-    private final LocalDateTime beginTime;
+    private LocalDateTime beginTime;
 
     @Column(name = "end_time")
     private LocalDateTime endTime;
@@ -32,12 +32,18 @@ public class Rent extends AbstractEntity implements Serializable {
     @Column(name = "rent_cost")
     private double rentCost = 0.0;
 
-    public Rent(Client client, Vehicle vehicle, LocalDateTime beginTime) {
+    @Column(name = "archive")
+    private boolean isArchive = false;
+
+    public Rent(Client client, Vehicle vehicle) {
         this.client = client;
         this.vehicle = vehicle;
-        this.beginTime = beginTime != null ? beginTime : LocalDateTime.now();
+        this.beginTime =  LocalDateTime.now();
     }
 
+    public Rent() {
+
+    }
 
 
     public Client getClient() {
@@ -48,6 +54,9 @@ public class Rent extends AbstractEntity implements Serializable {
         return vehicle;
     }
 
+    public long getRentId() {
+        return this.id;
+    }
 
 
     public int getRentDays() {
@@ -63,14 +72,12 @@ public class Rent extends AbstractEntity implements Serializable {
         return endTime;
     }
 
-    public void endRent(LocalDateTime endTime) {
+    public void endRent() {
         if (this.endTime != null) {
             throw new IllegalStateException("Rent has already ended");
         }
-        if (endTime.isBefore(beginTime)) {
-            throw new IllegalArgumentException("End time cannot be before begin time");
-        }
-        this.endTime = endTime != null ? endTime : LocalDateTime.now();
+        this.endTime = LocalDateTime.now();
+        this.isArchive = true;
         this.rentCost = client.applyDiscount(getRentDays() * vehicle.getActualRentalPrice());
     }
 

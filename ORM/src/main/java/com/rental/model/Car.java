@@ -5,16 +5,23 @@ import jakarta.persistence.*;
 @Entity
 @Access(AccessType.FIELD)
 @DiscriminatorValue("Car")
-public class Car extends MotorVehicle {
+public class Car extends Vehicle {
 
+    @Column(name="engine_displacement")
+    private int engineDisplacement;
 
+    @Column(name = "segment")
     private String segment;
 
     public Car(String plateNumber, int basePrice, int engineDisplacement, String segment) {
-        super(plateNumber, basePrice, engineDisplacement);
+        super(plateNumber, basePrice);
+        this.engineDisplacement = engineDisplacement;
         this.segment = segment;
     }
 
+    public Car() {
+        super("",0);
+    }
 
 
     public String getSegment() {

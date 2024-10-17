@@ -7,9 +7,6 @@ import jakarta.persistence.*;
 @DiscriminatorColumn(name = "client_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class ClientType extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     public abstract int getMaxVehicles();
     public abstract double applyDiscount(double price);

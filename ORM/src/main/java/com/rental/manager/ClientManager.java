@@ -5,11 +5,10 @@ import java.io.Serializable;
 import java.util.UUID;
 import com.rental.model.Client;
 import com.rental.model.ClientType;
-import com.rental.model.Address;
 import com.rental.repository.ClientRepository;
 
 public class ClientManager implements Serializable {
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
 
     public ClientManager(ClientRepository clientRepository) {
           if (clientRepository == null) {
@@ -18,13 +17,12 @@ public class ClientManager implements Serializable {
           this.clientRepository = clientRepository;
     }
 
-    public void removeClient(UUID ID) {
+    public void removeClient(Long ID) {
         clientRepository.remove(clientRepository.getByID(ID));
     }
 
 
-    public Client addClient(String username, ClientType type, Address address) {
-        Client client = new Client(username, type, address);
+    public Client addClient(Client client) {
         if(clientRepository.getByID(client.getClientId())!= null) {
             throw new IllegalArgumentException("Client already exists");
         }

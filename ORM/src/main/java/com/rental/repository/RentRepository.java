@@ -1,43 +1,44 @@
 package com.rental.repository;
 
-import com.rental.model.Vehicle;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
-import jakarta.persistence.TypedQuery;
+import com.rental.model.Rent;
+import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.UUID;
 
-public class VehicleRepository implements Repository<Vehicle> {
+public class RentRepository implements Repository<Rent> {
 
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("NBDUnit");
 
     @Override
-    public Vehicle getByID(Long ID) {
-        try (EntityManager em = emf.createEntityManager()) {
-            return em.find(Vehicle.class, ID);
+    public Rent getByID(Long id) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.find(Rent.class, id);
+        } finally {
+            em.close();
         }
     }
 
     @Override
-    public List<Vehicle> findAll() {
-        try (EntityManager em = emf.createEntityManager()) {
-            TypedQuery<Vehicle> query = em.createQuery("SELECT v FROM Vehicle v", Vehicle.class);
+    public List<Rent> findAll() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Rent> query = em.createQuery("SELECT r FROM Rent r", Rent.class);
             return query.getResultList();
+        } finally {
+            em.close();
         }
     }
 
     @Override
-    public Vehicle add(Vehicle vehicle) {
+    public Rent add(Rent rent) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            em.persist(vehicle);
+            em.persist(rent);
             transaction.commit();
-            return vehicle;
+            return rent;
         } catch (Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -49,14 +50,14 @@ public class VehicleRepository implements Repository<Vehicle> {
     }
 
     @Override
-    public void remove(Vehicle vehicle) {
+    public void remove(Rent rent) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            Vehicle attachedVehicle = em.find(Vehicle.class, vehicle.getVehicleId());
-            if (attachedVehicle != null) {
-                em.remove(attachedVehicle);
+            Rent attachedRent = em.find(Rent.class, rent.getRentId());
+            if (attachedRent != null) {
+                em.remove(attachedRent);
             }
             transaction.commit();
         } catch (Exception e) {
@@ -70,12 +71,12 @@ public class VehicleRepository implements Repository<Vehicle> {
     }
 
     @Override
-    public void update(Vehicle vehicle) {
+    public void update(Rent rent) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            em.merge(vehicle);
+            em.merge(rent);
             transaction.commit();
         } catch (Exception e) {
             if (transaction.isActive()) {

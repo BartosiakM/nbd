@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public interface Repository<T> {
 
-    T getByID(UUID id);
+    T getByID(Long id);
     List<T> findAll();
     T add(T t);
     void remove(T t);

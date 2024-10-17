@@ -12,6 +12,10 @@ public class Bicycle extends Vehicle {
         super(plateNumber, basePrice);
     }
 
+    public Bicycle() {
+        super("", 0);
+    }
+
     @Override
     public double getActualRentalPrice() {
         return getBasePrice();
