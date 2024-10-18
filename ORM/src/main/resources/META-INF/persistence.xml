@@ -25,6 +25,7 @@
             <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="eclipselink.logging.level" value="FINE"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.connection.isolation" value="2"/>
         </properties>
     </persistence-unit>
 </persistence>

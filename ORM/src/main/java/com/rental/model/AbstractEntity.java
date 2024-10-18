@@ -3,8 +3,6 @@ package com.rental.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.UUID;
-
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
@@ -17,6 +15,6 @@ public abstract class AbstractEntity implements Serializable {
 
     @Version
     @NotNull
-    @GeneratedValue(strategy =  GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     protected long version;
 }

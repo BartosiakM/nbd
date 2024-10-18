@@ -2,7 +2,6 @@ package com.rental.repository;
 
 import jakarta.persistence.*;
 import java.util.List;
-import java.util.UUID;
 import com.rental.model.Client;
 
 public class ClientRepository implements Repository<Client> {

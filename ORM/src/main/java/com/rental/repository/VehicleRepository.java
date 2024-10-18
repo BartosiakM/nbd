@@ -8,7 +8,6 @@ import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
-import java.util.UUID;
 
 public class VehicleRepository implements Repository<Vehicle> {
 

@@ -24,31 +24,13 @@ public class VehicleRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        // Tworzymy EntityManager i VehicleRepository przed każdym testem
         em = emf.createEntityManager();
         vehicleRepository = new VehicleRepository();
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Zamykamy EntityManager po każdym teście
-        if (em != null) {
-            em.close();
-        }
-    }
-
-    @AfterAll
-    public static void close() {
-        // Zamykanie EntityManagerFactory po wszystkich testach
-        if (emf != null) {
-            emf.close();
-        }
     }
 
     @Test
     public void testAddVehicle() {
         Vehicle vehicle = new Car("El7v200", 800, 2, "A");
-
         Vehicle addedVehicle = vehicleRepository.add(vehicle);
 
         assertNotNull(addedVehicle.getVehicleId());
@@ -59,7 +41,6 @@ public class VehicleRepositoryTest {
     @Test
     public void testGetByID() {
         Vehicle vehicle = new Car("El7v200", 800, 2, "A");
-
         vehicleRepository.add(vehicle);
 
         Vehicle foundVehicle = vehicleRepository.getByID(vehicle.getVehicleId());
@@ -77,25 +58,23 @@ public class VehicleRepositoryTest {
         vehicleRepository.add(vehicle2);
 
         List<Vehicle> vehicles = vehicleRepository.findAll();
-        assertFalse(vehicles.isEmpty(), "Vehicle list should not be empty.");
+        assertFalse(vehicles.isEmpty());
         assertEquals(2, vehicles.size());
     }
 
     @Test
     public void testRemoveVehicle() {
         Vehicle vehicle = new MotorVehicle("El7v200", 800, 2);
-
         vehicleRepository.add(vehicle);
         vehicleRepository.remove(vehicle);
 
         Vehicle removedVehicle = vehicleRepository.getByID(vehicle.getVehicleId());
-        assertNull(removedVehicle, "Vehicle should be removed from the database.");
+        assertNull(removedVehicle);
     }
 
     @Test
     public void testUpdateVehicle() {
         Vehicle vehicle = new MotorVehicle("El7v200", 800, 2);
-
         vehicleRepository.add(vehicle);
         vehicle.setBasePrice(200);
         vehicleRepository.update(vehicle);

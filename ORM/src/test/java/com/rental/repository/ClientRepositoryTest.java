@@ -7,7 +7,6 @@ import com.rental.model.GoldClientType;
 import org.junit.jupiter.api.*;
 import jakarta.persistence.*;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -26,31 +25,14 @@ public class ClientRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        // Tworzymy EntityManager i ClientRepository przed każdym testem
         em = emf.createEntityManager();
         clientRepository = new ClientRepository();
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Zamykamy EntityManager po każdym teście
-        if (em != null) {
-            em.close();
-        }
-    }
-
-    @AfterAll
-    public static void close() {
-        // Zamykanie EntityManagerFactory po wszystkich testach
-        if (emf != null) {
-            emf.close();
-        }
     }
 
     @Test
     public void testAddClient() {
         ClientType type = new GoldClientType();
-        Client client = new Client( "Joe Doe", type);
+        Client client = new Client("Joe Doe", type);
 
         Client addedClient = clientRepository.add(client);
 
@@ -61,8 +43,7 @@ public class ClientRepositoryTest {
     @Test
     public void testGetByID() {
         ClientType type = new GoldClientType();
-        Client client = new Client( "Joe Doe", type);
-
+        Client client = new Client("Joe Doe", type);
 
         clientRepository.add(client);
 
@@ -75,11 +56,11 @@ public class ClientRepositoryTest {
     public void testFindAll() {
         ClientType type1 = new GoldClientType();
         ClientType type2 = new DiamondClientType();
-        Client client1 = new Client( "Joe Doe", type1);
+        Client client1 = new Client("Joe Doe", type1);
         Client client2 = new Client("John Doeski", type2);
 
         clientRepository.add(client1);
-        clientRepository.add(client2 );
+        clientRepository.add(client2);
 
         List<Client> clients = clientRepository.findAll();
         assertFalse(clients.isEmpty(), "Clients list should not be empty.");
@@ -89,11 +70,10 @@ public class ClientRepositoryTest {
     @Test
     public void testRemoveClient() {
         ClientType type = new GoldClientType();
-        Client client = new Client( "Joe Doe", type);
+        Client client = new Client("Joe Doe", type);
 
         clientRepository.add(client);
         clientRepository.remove(client);
-
 
         Client removedClient = clientRepository.getByID(client.getClientId());
         assertNull(removedClient, "Client should be removed from the database.");
@@ -102,13 +82,11 @@ public class ClientRepositoryTest {
     @Test
     public void testUpdateClient() {
         ClientType type = new GoldClientType();
-        Client client = new Client( "Joe Doe", type);
-
+        Client client = new Client("Joe Doe", type);
 
         clientRepository.add(client);
         client.setUsername("Johnny");
         clientRepository.update(client);
-
 
         Client updatedClient = clientRepository.getByID(client.getClientId());
         assertEquals("Johnny", updatedClient.getUsername());

@@ -1,16 +1,13 @@
 package com.rental.model;
+
 import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-
-
 import java.io.Serializable;
-import java.util.UUID;
 
 @Entity
 @Table(name = "Client")
 @Access(AccessType.FIELD)
-public class  Client extends AbstractEntity implements Serializable {
+public class Client extends AbstractEntity implements Serializable {
 
     @Column(name = "username")
     @NotNull
@@ -29,16 +26,27 @@ public class  Client extends AbstractEntity implements Serializable {
         this.activeRents = 0;
     }
 
-    public Client() {
+    public Client() {}
 
+    public ClientType getClientType() {
+        return clientType;
     }
 
+    public int getActiveRents() {
+        return activeRents;
+    }
+
+    public void setActiveRents(int activeRents) {
+        this.activeRents = activeRents;
+    }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) { this.username = username; }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public Long getClientId() {
         return this.id;
@@ -51,5 +59,4 @@ public class  Client extends AbstractEntity implements Serializable {
     public double applyDiscount(double price) {
         return clientType.applyDiscount(price);
     }
-
 }

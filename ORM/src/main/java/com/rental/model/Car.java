@@ -20,9 +20,8 @@ public class Car extends Vehicle {
     }
 
     public Car() {
-        super("",0);
+        super("", 0);
     }
-
 
     public String getSegment() {
         return segment;
@@ -34,10 +33,8 @@ public class Car extends Vehicle {
 
     @Override
     public double getActualRentalPrice() {
-        // Zmienna dla współczynnika mnożnika ceny
         double multiplier;
 
-        // Warunki na podstawie wartości stringa segmentu
         if (segment.equalsIgnoreCase("A")) {
             multiplier = 1.0;
         } else if (segment.equalsIgnoreCase("B")) {
@@ -49,12 +46,9 @@ public class Car extends Vehicle {
         } else if (segment.equalsIgnoreCase("E")) {
             multiplier = 1.4;
         } else {
-            multiplier = 1.0;  // Domyślny współczynnik, jeśli segment nie pasuje do żadnego z powyższych
+            multiplier = 1.0;
         }
 
-        // Obliczenie ceny na podstawie współczynnika
         return getBasePrice() * multiplier;
     }
-
-
 }

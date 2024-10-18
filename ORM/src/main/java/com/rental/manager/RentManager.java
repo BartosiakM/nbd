@@ -2,26 +2,19 @@ package com.rental.manager;
 
 import com.rental.model.Rent;
 import com.rental.repository.RentRepository;
-
 import java.io.Serializable;
-
 
 public class RentManager implements Serializable {
     private final RentRepository rentRepository;
 
-
-    public RentManager( RentRepository rentRepository ) {
-        if(rentRepository == null) {
+    public RentManager(RentRepository rentRepository) {
+        if (rentRepository == null) {
             throw new NullPointerException("rentRepository is null");
         }
         this.rentRepository = rentRepository;
-
     }
 
     public Rent rentVehicle(Rent rent) {
-        if (rent == null) {
-            throw new IllegalArgumentException("Rent cannot be null");
-        }
         if (rentRepository.getByID(rent.getRentId()) != null) {
             throw new IllegalArgumentException("Rent already exists");
         }
@@ -30,9 +23,6 @@ public class RentManager implements Serializable {
     }
 
     public void endRent(Rent rent) {
-        if (rent == null) {
-            throw new IllegalArgumentException("Rent cannot be null");
-        }
         Rent endedRent = rentRepository.getByID(rent.getRentId());
         endedRent.endRent();
         rentRepository.update(endedRent);

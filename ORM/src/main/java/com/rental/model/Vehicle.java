@@ -2,9 +2,7 @@ package com.rental.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-
 import java.io.Serializable;
-import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -18,20 +16,23 @@ public abstract class Vehicle extends AbstractEntity implements Serializable {
     @Column(name = "basePrice")
     private int basePrice;
 
-    @Column(name = "archived")
-    private boolean archive;
+    @Column(name = "available")
+    private boolean available = true;
 
     public Vehicle(String plateNumber, int basePrice) {
         this.plateNumber = plateNumber;
         this.basePrice = basePrice;
-        this.archive = false;
     }
+
+    public Vehicle() {}
 
     public Long getVehicleId() {
         return this.id;
     }
 
-    public String getPlateNumber() { return this.plateNumber; }
+    public String getPlateNumber() {
+        return this.plateNumber;
+    }
 
     public int getBasePrice() {
         return basePrice;
@@ -43,11 +44,11 @@ public abstract class Vehicle extends AbstractEntity implements Serializable {
 
     public abstract double getActualRentalPrice();
 
-    public boolean isArchived() {
-        return archive;
+    public boolean isAvailable() {
+        return available;
     }
 
-    public void setArchive(boolean archive) {
-        this.archive = archive;
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }

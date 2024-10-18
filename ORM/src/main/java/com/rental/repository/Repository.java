@@ -1,7 +1,6 @@
 package com.rental.repository;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface Repository<T> {
 

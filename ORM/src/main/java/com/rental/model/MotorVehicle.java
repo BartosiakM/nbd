@@ -19,7 +19,6 @@ public class MotorVehicle extends Vehicle {
         super("", 0);
     }
 
-
     public int getEngineDisplacement() {
         return engineDisplacement;
     }

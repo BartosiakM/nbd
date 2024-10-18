@@ -2,7 +2,6 @@ package com.rental.model;
 
 import jakarta.persistence.*;
 
-
 @Entity
 @Access(AccessType.FIELD)
 @DiscriminatorValue("Bicycle")

@@ -1,6 +1,8 @@
 package com.rental.repository;
 
+import com.rental.model.Client;
 import com.rental.model.Rent;
+import com.rental.model.Vehicle;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -34,11 +36,33 @@ public class RentRepository implements Repository<Rent> {
     public Rent add(Rent rent) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
+
         try {
             transaction.begin();
+            Vehicle rentedVehicle = em.find(Vehicle.class, rent.getVehicle().getVehicleId(), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+            Client rentingClient = em.find(Client.class, rent.getClient().getClientId(), LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+
+            if (rentingClient.getMaxVehicles() <= rentingClient.getActiveRents()) {
+                throw new IllegalStateException("This client has already reached the maximum number of active rentals.");
+            }
+            if (!rentedVehicle.isAvailable()) {
+                throw new IllegalStateException("This vehicle is not available");
+            }
+            rentedVehicle.setAvailable(false);
+            rentingClient.setActiveRents(rentingClient.getActiveRents() + 1);
+
+            em.merge(rentingClient);
+            em.merge(rentedVehicle);
             em.persist(rent);
+
             transaction.commit();
+            em.refresh(rent);
             return rent;
+        } catch (OptimisticLockException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw new RuntimeException("Vehicle has just been rented");
         } catch (Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();

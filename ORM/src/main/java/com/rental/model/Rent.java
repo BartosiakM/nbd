@@ -1,12 +1,9 @@
 package com.rental.model;
 
 import jakarta.persistence.*;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.UUID;
 import jakarta.validation.constraints.NotNull;
-
 
 @Entity
 @Table(name = "Rent")
@@ -38,13 +35,10 @@ public class Rent extends AbstractEntity implements Serializable {
     public Rent(Client client, Vehicle vehicle) {
         this.client = client;
         this.vehicle = vehicle;
-        this.beginTime =  LocalDateTime.now();
+        this.beginTime = LocalDateTime.now();
     }
 
-    public Rent() {
-
-    }
-
+    public Rent() {}
 
     public Client getClient() {
         return client;
@@ -57,7 +51,6 @@ public class Rent extends AbstractEntity implements Serializable {
     public long getRentId() {
         return this.id;
     }
-
 
     public int getRentDays() {
         if (endTime == null) return 0;
@@ -78,6 +71,8 @@ public class Rent extends AbstractEntity implements Serializable {
         }
         this.endTime = LocalDateTime.now();
         this.isArchive = true;
+        this.vehicle.setAvailable(true);
+        this.client.setActiveRents(client.getActiveRents() - 1);
         this.rentCost = client.applyDiscount(getRentDays() * vehicle.getActualRentalPrice());
     }
 
